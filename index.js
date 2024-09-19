@@ -27,6 +27,6 @@ app.use("/api", customerRoutes, productRoutes, deliveryRoutes);
 app.use(handleServerError);
 
 // Start the server
-app.listen(5000, () => {
+app.listen(PORT, () => {
   console.log(`Server listening on port 5000`);
 });
