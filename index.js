@@ -20,8 +20,6 @@ app.use(cors());
 // Parse JSON bodies
 app.use(express.json());
 
-app.get("/", (req, res) => res.send("Express on Vercel"));
-
 // Use the user routes
 app.use("/api", customerRoutes, productRoutes, deliveryRoutes);
 
