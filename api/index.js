@@ -1,13 +1,13 @@
-const database = require("./config/database");
+const database = require("../config/database");
 
 var cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
-const handleServerError = require("./middlewares/errorMiddleware");
+const handleServerError = require("../middlewares/errorMiddleware");
 
-const customerRoutes = require("./routes/customerRoutes");
-const productRoutes = require("./routes/productsRoutes");
-const deliveryRoutes = require("./routes/deliveryRoutes");
+const customerRoutes = require("../routes/customerRoutes");
+const productRoutes = require("../routes/productsRoutes");
+const deliveryRoutes = require("../routes/deliveryRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
