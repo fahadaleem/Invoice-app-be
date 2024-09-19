@@ -12,6 +12,7 @@ router.get("/customers", async (req, res, next) => {
       data: customers,
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       status: "error",
       message: "Failed to retrieve customers.",
