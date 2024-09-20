@@ -28,5 +28,5 @@ app.use(handleServerError);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server listening on port 5000`);
+  console.log(`Server listening on port ${PORT}`);
 });

@@ -3,22 +3,32 @@ const express = require("express");
 
 const router = express.Router();
 
-// router.get("/delivery/:id", async (req, res, next) => {
-//   try {
-//     const customers = await Customer.find(); // Fetch all customers from the database
+router.get("/delivery/:id", async (req, res, next) => {
+  try {
+    const deliveryId = req.params.id;
 
-//     res.status(200).json({
-//       status: "success",
-//       data: customers,
-//     });
-//   } catch (err) {
-//     res.status(500).json({
-//       status: "error",
-//       message: "Failed to retrieve customers.",
-//     });
-//     next(err); // Pass the error to the error handler
-//   }
-// });
+    // Fetch the delivery note by ID
+    const deliveryNote = await Delivery.findById(deliveryId);
+
+    // If no delivery note is found, send a 404 response
+    if (!deliveryNote) {
+      return res.status(404).json({
+        status: "error",
+        message: "Delivery note not found.",
+      });
+    }
+
+    // If found, return the delivery note data
+    res.status(200).json({
+      status: "success",
+      message: "Delivery note retrieved successfully.",
+      data: deliveryNote,
+    });
+  } catch (err) {
+    console.log(err);
+    next(err); // Pass the error to the error handler
+  }
+});
 
 router.post("/delivery", async (req, res, next) => {
   try {
@@ -41,6 +51,7 @@ router.post("/delivery", async (req, res, next) => {
       data: deliveryNote,
     });
   } catch (err) {
+    console.log(err);
     next(err); // Pass the error to the error handler
   }
 });

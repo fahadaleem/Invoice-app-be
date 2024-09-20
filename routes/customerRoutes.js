@@ -6,17 +6,11 @@ const router = express.Router();
 router.get("/customers", async (req, res, next) => {
   try {
     const customers = await Customer.find(); // Fetch all customers from the database
-
     res.status(200).json({
       status: "success",
       data: customers,
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      status: "error",
-      message: "Failed to retrieve customers.",
-    });
     next(err); // Pass the error to the error handler
   }
 });
@@ -57,10 +51,11 @@ router.get("/customers/:id", async (req, res, next) => {
 
     if (!customer) {
       // If no customer is found, send a 404 response
-      return res.status(404).json({
+      res.status(404).json({
         status: "error",
         message: "Customer not found.",
       });
+      return;
     }
 
     // If the customer is found, return the customer data
