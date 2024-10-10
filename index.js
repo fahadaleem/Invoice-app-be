@@ -9,6 +9,8 @@ const customerRoutes = require("./routes/customerRoutes");
 const productRoutes = require("./routes/productsRoutes");
 const deliveryRoutes = require("./routes/deliveryRoutes");
 const stockRoutes = require("./routes/stockRoutes");
+const invoiceRoutes = require("./routes/invoiceRoutes");
+const expenseRoutes = require("./routes/expenseRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,7 +24,7 @@ app.use(cors());
 app.use(express.json());
 
 // Use the user routes
-app.use("/api", customerRoutes, productRoutes, deliveryRoutes, stockRoutes);
+app.use("/api", customerRoutes, productRoutes, deliveryRoutes, stockRoutes, invoiceRoutes, expenseRoutes);
 
 // handle server error
 app.use(handleServerError);

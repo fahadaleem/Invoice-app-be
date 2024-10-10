@@ -5,16 +5,18 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  price: {
+  cost_price: {
     type: Number,
     required: true,
   },
-  available_stocks: {
+  quantity: {
     type: Number,
-    required: true,
+  },
+  min_market_value: {
+    type: Number,
   },
 });
 
 const Product = mongoose.model("Product", productSchema);
 
-module.exports = Product;
+module.exports = { Product, productSchema };

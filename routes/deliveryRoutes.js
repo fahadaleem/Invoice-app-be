@@ -30,19 +30,15 @@ router.get("/delivery/:id", async (req, res, next) => {
   }
 });
 
-router.post("/delivery", async (req, res, next) => {
+router.post("/deliveries", async (req, res, next) => {
   try {
-    const { customer_id, generated_by, products, subtotal, payment_status } =
-      req.body;
+    const { customer, products, amount } = req.body;
 
     // Create the delivery note
     const deliveryNote = await Delivery.create({
-      customer_id,
-      generated_by,
+      customer,
       products,
-      subtotal,
-      payment_status,
-      date: new Date(), // Automatically set the current date
+      amount,
     });
 
     res.status(200).json({

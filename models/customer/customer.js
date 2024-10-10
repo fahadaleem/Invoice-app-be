@@ -14,6 +14,14 @@ const customerSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  id_no: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
   address: {
     type: String,
     required: true,
