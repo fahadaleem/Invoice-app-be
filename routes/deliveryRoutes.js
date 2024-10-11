@@ -3,7 +3,7 @@ const express = require("express");
 
 const router = express.Router();
 
-router.get("/delivery/:id", async (req, res, next) => {
+router.get("/deliveries/:id", async (req, res, next) => {
   try {
     const deliveryId = req.params.id;
 
@@ -48,6 +48,22 @@ router.post("/deliveries", async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
+    next(err); // Pass the error to the error handler
+  }
+});
+
+router.get("/deliveries", async (req, res, next) => {
+  try {
+    // Fetch all delivery notes
+    const deliveries = await Delivery.find().populate("customer").populate("products.product");
+
+    // If found, return the list of deliveries
+    res.status(200).json({
+      status: "success",
+      message: "Delivery notes retrieved successfully.",
+      data: deliveries,
+    });
+  } catch (err) {
     next(err); // Pass the error to the error handler
   }
 });
