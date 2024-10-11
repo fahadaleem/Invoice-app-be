@@ -8,7 +8,7 @@ router.get("/deliveries/:id", async (req, res, next) => {
     const deliveryId = req.params.id;
 
     // Fetch the delivery note by ID
-    const deliveryNote = await Delivery.findById(deliveryId);
+    const deliveryNote = await Delivery.findById(deliveryId).populate("customer").populate("products.product");
 
     // If no delivery note is found, send a 404 response
     if (!deliveryNote) {
