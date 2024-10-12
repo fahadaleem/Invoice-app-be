@@ -1,4 +1,5 @@
 const Expense = require("../models/expense/expense");
+const Account = require("../models/account/account");
 const express = require("express");
 
 const router = express.Router();
@@ -17,6 +18,14 @@ router.post("/expenses", async (req, res, next) => {
     });
 
     const savedExpense = await newExpense.save();
+
+    // Now, push the expense into the Account collection as an Expense
+    const newExpenseEntry = new Account({
+      type: "expense", // Since it's an expense
+      amount: amount, // Use the same amount
+      description: reason, // You can use 'reason' for the description
+    });
+    await newExpenseEntry.save();
 
     res.status(201).json({
       status: "success",

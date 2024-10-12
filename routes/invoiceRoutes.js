@@ -1,4 +1,5 @@
 const Invoice = require("../models/invoice/invoice");
+const Account = require("../models/account/account");
 const express = require("express");
 
 const router = express.Router();
@@ -84,6 +85,48 @@ router.get("/invoices/:invoiceId", async (req, res, next) => {
     res.status(200).json({
       message: "Invoice fetched successfully",
       data: invoice,
+      status: "success",
+    });
+  } catch (error) {
+    next(error); // Pass error to the global error handler
+  }
+});
+
+// PUT route to update invoice details
+router.put("/invoices/:invoiceId", async (req, res, next) => {
+  try {
+    const { invoiceId } = req.params; // Get the invoiceId from request parameters
+    const { customer, products, amount, status } = req.body; // Extract fields to update
+
+    // Find the invoice by ID and update it
+    const updatedInvoice = await Invoice.findByIdAndUpdate(
+      invoiceId,
+      { customer, products, amount, status },
+      { new: true, runValidators: true } // Options to return the updated document and run validators
+    )
+      .populate("customer") // Populate customer details
+      .populate("products.product"); // Populate product details
+
+    // Check if the invoice was found and updated
+    if (!updatedInvoice) {
+      return res.status(404).json({
+        message: "Invoice not found",
+        status: "error",
+      });
+    }
+
+    // Now, push the expense into the Account collection as an Expense
+    const newExpenseEntry = new Account({
+      type: "income", // Since it's an expense
+      amount: amount, // Use the same amount
+      description: `Amount received from ${updatedInvoice.customer.name}`, // You can use 'reason' for the description
+    });
+    await newExpenseEntry.save();
+
+    // Respond with the updated invoice
+    res.status(200).json({
+      message: "Invoice updated successfully",
+      data: updatedInvoice,
       status: "success",
     });
   } catch (error) {
