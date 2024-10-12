@@ -70,4 +70,25 @@ router.delete("/invoices/:invoiceId", async (req, res, next) => {
   }
 });
 
+// GET route to fetch a specific invoice by ID
+router.get("/invoices/:invoiceId", async (req, res, next) => {
+  try {
+    const { invoiceId } = req.params;
+
+    // Find the invoice by its ID and populate customer and products details
+    const invoice = await Invoice.findById(invoiceId)
+      .populate("customer") // Populate customer details
+      .populate("products.product"); // Populate product details
+
+    // Send the fetched invoice details
+    res.status(200).json({
+      message: "Invoice fetched successfully",
+      data: invoice,
+      status: "success",
+    });
+  } catch (error) {
+    next(error); // Pass error to the global error handler
+  }
+});
+
 module.exports = router;
