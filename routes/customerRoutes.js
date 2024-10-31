@@ -3,7 +3,7 @@ const express = require("express");
 
 const router = express.Router();
 
-// GET /customers - Fetch customers with pagination
+// GET /customers - Fetch customers with pagination or all customers if limit = -1
 router.get("/customers", async (req, res, next) => {
   try {
     // Get the page and limit query parameters, default to page 1 and limit 10
@@ -13,21 +13,31 @@ router.get("/customers", async (req, res, next) => {
     const pageNum = parseInt(page, 10);
     const limitNum = parseInt(limit, 10);
 
-    // Calculate the number of documents to skip
-    const skip = (pageNum - 1) * limitNum;
-
-    // Fetch the customers with pagination
-    const customers = await Customer.find().skip(skip).limit(limitNum);
-
     // Fetch total number of customers to calculate total pages
     const totalCustomers = await Customer.countDocuments();
+
+    let customers;
+    let totalPages;
+
+    if (limitNum === -1) {
+      // If limit is -1, fetch all customers without pagination
+      customers = await Customer.find();
+      totalPages = 1; // Only one "page" since we're returning all items
+    } else {
+      // Calculate the number of documents to skip for pagination
+      const skip = (pageNum - 1) * limitNum;
+
+      // Fetch the customers with pagination
+      customers = await Customer.find().skip(skip).limit(limitNum);
+      totalPages = Math.ceil(totalCustomers / limitNum);
+    }
 
     res.status(200).json({
       status: "success",
       data: {
         customers,
-        total_pages: Math.ceil(totalCustomers / limitNum),
-        current_page: pageNum,
+        total_pages: totalPages,
+        current_page: limitNum === -1 ? "1" : pageNum,
         total_customers: totalCustomers,
       },
     });
