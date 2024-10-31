@@ -14,9 +14,8 @@ const customerSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  id_no: {
+  customer_registeration_number: {
     type: String,
-    required: true,
   },
   city: {
     type: String,

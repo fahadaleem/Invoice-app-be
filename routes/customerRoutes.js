@@ -38,7 +38,7 @@ router.get("/customers", async (req, res, next) => {
 
 router.post("/customers", async (req, res, next) => {
   try {
-    const { name, email, phone_no, id_no, city, address } = req.body;
+    const { name, email, phone_no, customer_registeration_number, city, address } = req.body;
 
     // Check if the customer already exist exists
     const existingCusomter = await Customer.findOne({ email });
@@ -55,7 +55,7 @@ router.post("/customers", async (req, res, next) => {
       phone_no,
       email,
       address,
-      id_no,
+      customer_registeration_number,
       city,
     });
 
