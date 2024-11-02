@@ -68,4 +68,30 @@ router.get("/deliveries", async (req, res, next) => {
   }
 });
 
+router.delete("/deliveries/:id", async (req, res, next) => {
+  try {
+    const deliveryId = req.params.id;
+
+    // Attempt to delete the delivery note by ID
+    const result = await Delivery.findByIdAndDelete(deliveryId);
+
+    // If no delivery note is found, send a 404 response
+    if (!result) {
+      return res.status(404).json({
+        status: "error",
+        message: "Delivery note not found.",
+      });
+    }
+
+    // If deletion is successful, send a success response
+    res.status(200).json({
+      status: "success",
+      message: "Delivery note deleted successfully.",
+    });
+  } catch (err) {
+    console.log(err);
+    next(err); // Pass the error to the error handler
+  }
+});
+
 module.exports = router;
