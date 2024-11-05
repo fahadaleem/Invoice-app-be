@@ -23,7 +23,8 @@ router.post("/expenses", async (req, res, next) => {
     const newExpenseEntry = new Account({
       type: "expense", // Since it's an expense
       amount: amount, // Use the same amount
-      description: reason, // You can use 'reason' for the description
+      description: reason, // You can use 'reason' for the description,
+      supported_documents: supported_documents,
     });
     await newExpenseEntry.save();
 

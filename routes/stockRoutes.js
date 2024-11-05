@@ -1,5 +1,6 @@
 const express = require("express");
 const Stocks = require("../models/stocks/stocks");
+const Account = require("../models/account/account");
 const { Product } = require("../models/product/product");
 const router = express.Router();
 
@@ -26,6 +27,17 @@ router.post("/stocks", async (req, res, next) => {
 
     //  Save to the database
     const savedStockPurchase = await newStockPurchase.save();
+
+    // Now, push the expense into the Account collection as an Expense
+    const newExpenseEntry = new Account({
+      type: "expense", // Since it's an expense
+      amount: total_bundle_cost, // Use the same amount
+      description: reason, // You can use 'reason' for the description,
+      supported_documents: supported_documents,
+    });
+
+    await newExpenseEntry.save();
+
     res.status(201).json({
       message: "New stock added successfully.",
       data: savedStockPurchase,
