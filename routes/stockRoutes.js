@@ -9,7 +9,6 @@ router.post("/stocks", async (req, res, next) => {
 
   try {
     // add products in the databases
-
     const savedProducts = await Product.insertMany(products);
     // Extract product IDs from the saved products
     const productIds = savedProducts.map((product) => product._id);

@@ -15,6 +15,9 @@ const productSchema = new mongoose.Schema({
   min_market_value: {
     type: Number,
   },
+  purchase_date: {
+    type: Date,
+  },
 });
 
 const Product = mongoose.model("Product", productSchema);
