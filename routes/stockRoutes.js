@@ -25,14 +25,20 @@ router.post("/stocks", async (req, res, next) => {
       supported_documents,
     });
 
+    // calculating total cost from product if the purchase item is individual
+
     //  Save to the database
     const savedStockPurchase = await newStockPurchase.save();
 
     // Now, push the expense into the Account collection as an Expense
     const newExpenseEntry = new Account({
       type: "expense", // Since it's an expense
-      amount: total_bundle_cost, // Use the same amount
-      description: reason, // You can use 'reason' for the description,
+      amount: is_bundle
+        ? total_bundle_cost
+        : products.reduce((accumulator, product) => {
+            return accumulator + product.cost_price * product.quantity;
+          }, 0), // Use the same amount
+      description: "Stock Purchased", // You can use 'reason' for the description,
       supported_documents: supported_documents,
     });
 
